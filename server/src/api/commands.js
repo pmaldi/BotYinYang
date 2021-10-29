@@ -1,6 +1,7 @@
 const express = require('express');
 const monk = require('monk')
 const Joi = require('@hapi/joi')
+const axios = require('../services/axios');
 
 const db = monk(process.env.MONGO_URI);
 const commandsDB = db.get('commands');
@@ -41,6 +42,7 @@ router.post('/', async (req, res, next) => {
     try {
         const value = await schema.validateAsync(req.body);
         const inserted = await commandsDB.insert(value);
+        axios.getAllCommands()
         res.json(inserted)
     } catch (error) {
         next(error)
