@@ -1,4 +1,6 @@
-const axios = require('axios')
+const { array } = require('@hapi/joi');
+const axios = require('axios');
+const { channel } = require('diagnostics_channel');
 const fs = require('fs')
 
 var instance = axios.create({
@@ -34,3 +36,16 @@ module.exports.addCommand = async (message) => {
     return status
 }
 
+module.exports.getChannels = async () => {
+    let channelsList = []
+    await instance.get('/api/v1/globals/')
+        .then(function (response) {
+            response.data.forEach(element => {
+                channelsList.push(element["channel"])
+            });
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    return channelsList
+}
