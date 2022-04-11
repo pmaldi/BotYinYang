@@ -16,6 +16,7 @@
 
 */
 import React from "react";
+import Axios from "axios";
 
 // reactstrap components
 import {
@@ -36,6 +37,17 @@ import {
 
 
 function Commands() {
+    const [CommandsList, setCommandsList] = React.useState(null);
+    const test = [1, 2, 3]
+
+    React.useEffect(() => {
+        Axios.get("http://127.0.0.1:4242/api/v1/commands").then((response) => {
+            setCommandsList(response.data[0]);
+        });
+    }, []);
+
+    if (!CommandsList) return null;
+
     return (
         <>
             <div className="content">
